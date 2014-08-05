@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<web-app version="3.0" metadata-complete="true"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+            http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+	<display-name>test</display-name>
+
+	<!-- Context Parameters -->
+
+	<context-param>
+		<param-name>tagpoolMaxSize</param-name>
+		<param-value>50</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>defaultHtmlEscape</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<!-- Session -->
+
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+
+	<!-- JSP Configuration -->
+
+	<jsp-config>
+		<jsp-property-group>
+			<url-pattern>*.jsp</url-pattern>
+			<!-- Disable JSP scriptlets and expressions -->
+			<scripting-invalid>true</scripting-invalid>
+			<!-- Remove additional whitespace due to JSP directives -->
+			<trim-directive-whitespaces>true</trim-directive-whitespaces>
+		</jsp-property-group>
+	</jsp-config>
+	
+</web-app>
