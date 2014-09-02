@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 
 import net.jawr.web.servlet.JawrSpringController;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -27,9 +27,6 @@ import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.test.mvc.controller.HomepageController;
-import javax.annotation.Resource;
-import javax.servlet.Filter;
-import javax.servlet.ServletContext;
 
 @Configuration
 @EnableWebMvc
@@ -40,6 +37,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements SchedulingConf
     @Resource
     private ServletContext servletContext;
 
+    @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/**").setCachePeriod(31556926);
         registry.addResourceHandler("/webjars/**").addResourceLocations("/webjars/");
@@ -127,7 +125,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements SchedulingConf
         controller.setType(type);
         try {
 			controller.afterPropertiesSet();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new RuntimeException(e);
 		}
         return controller;

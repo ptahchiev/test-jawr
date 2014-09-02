@@ -17,10 +17,13 @@ import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.util.HttpSessionMutexListener;
 
+import com.test.mvc.filter.UrlEncoderFilter;
+
 
 @Order(value = 0)
 public class MVCWebConfig implements WebApplicationInitializer {
 
+    @Override
     public void onStartup(final ServletContext servletContext) throws ServletException {
 
         final AnnotationConfigWebApplicationContext webCtx = new AnnotationConfigWebApplicationContext();
@@ -44,6 +47,10 @@ public class MVCWebConfig implements WebApplicationInitializer {
         charEncodingfilterReg.setInitParameter("forceEncoding", "true");
         charEncodingfilterReg.addMappingForServletNames(null, false, dispatcherServletReg.getName());
 
+        /* Storefront Delegating Filter */
+        final FilterRegistration storefrontFilterChainReg = servletContext.addFilter(UrlEncoderFilter.NAME, DelegatingFilterProxy.class);
+        storefrontFilterChainReg.addMappingForServletNames(null, false, dispatcherServletReg.getName());
+        
         /* HiddenHttpMethodFilter Filter */
         final FilterRegistration hiddenHttpMethodFilterReg = servletContext.addFilter("hiddenHttpMethodFilter", HiddenHttpMethodFilter.class);
         hiddenHttpMethodFilterReg.addMappingForServletNames(null, false, dispatcherServletReg.getName());
