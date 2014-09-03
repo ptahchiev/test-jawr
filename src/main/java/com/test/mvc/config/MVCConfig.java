@@ -9,6 +9,7 @@ import javax.servlet.ServletContext;
 
 import net.jawr.web.servlet.JawrSpringController;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -34,8 +35,8 @@ import com.test.mvc.controller.HomepageController;
 @ComponentScan(basePackages = { "com.test.mvc" })
 public class MVCConfig extends WebMvcConfigurerAdapter implements SchedulingConfigurer {
 
-    @Resource
-    private ServletContext servletContext;
+    @Autowired
+    private ServletContext context; 
 
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
@@ -89,7 +90,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements SchedulingConf
 
     protected JawrSpringController defaultJawrSpringController(final String type) {
         final JawrSpringController controller = new JawrSpringController();
-		controller.setServletContext(servletContext);
+		controller.setServletContext(context);
 
         final Properties props = new Properties();
 
@@ -105,8 +106,8 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements SchedulingConf
         props.setProperty("jawr.css.bundle.basedir", "/resources/theme");
         //props.setProperty("jawr.css.bundle.factory.global.preprocessors", "smartsprites");
 
-        props.setProperty("jawr.url.contextpath.override", "/storefront");
-        props.setProperty("jawr.url.contextpath.ssl.override", "/storefront");
+        //props.setProperty("jawr.url.contextpath.override", "/storefront");
+        //props.setProperty("jawr.url.contextpath.ssl.override", "/storefront");
         props.setProperty("jawr.url.contextpath.override.used.in.debug.mode", "true");
 		
 		props.setProperty("jawr.css.bundle.common.global", "true");

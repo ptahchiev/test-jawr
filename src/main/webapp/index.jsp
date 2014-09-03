@@ -10,7 +10,7 @@
 </head>
 
 <body>
-	<div style="height: 20px">
+	<div style="height: 20px"> 
 		<jwr:img src="/resources/img/cog.png" />
 		This HTML image use a generated path which force the caching for the
 		browser.
