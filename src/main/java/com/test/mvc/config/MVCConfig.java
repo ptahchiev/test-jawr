@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 
 import net.jawr.web.servlet.JawrSpringController;
@@ -34,10 +35,10 @@ import com.test.mvc.controller.HomepageController;
 @ComponentScan(basePackages = { "com.test.mvc" })
 public class MVCConfig extends WebMvcConfigurerAdapter implements SchedulingConfigurer {
 
-	@Autowired
-	private ServletContext context;
-	
-	@Override
+    @Autowired
+    private ServletContext context; 
+
+    @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/**").setCachePeriod(31556926);
         registry.addResourceHandler("/webjars/**").addResourceLocations("/webjars/");
@@ -87,9 +88,10 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements SchedulingConf
 	
 	/* JAWR */
 
-    protected JawrSpringController defaultJawrSpringController(String type) {
+    protected JawrSpringController defaultJawrSpringController(final String type) {
         final JawrSpringController controller = new JawrSpringController();
-        controller.setServletContext(context);
+		controller.setServletContext(context);
+
         final Properties props = new Properties();
 
         props.setProperty("jawr.debug.on", "false");
@@ -104,8 +106,8 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements SchedulingConf
         props.setProperty("jawr.css.bundle.basedir", "/resources/theme");
         //props.setProperty("jawr.css.bundle.factory.global.preprocessors", "smartsprites");
 
-        props.setProperty("jawr.url.contextpath.override", "");
-        props.setProperty("jawr.url.contextpath.ssl.override", "");
+        //props.setProperty("jawr.url.contextpath.override", "/storefront");
+        //props.setProperty("jawr.url.contextpath.ssl.override", "/storefront");
         props.setProperty("jawr.url.contextpath.override.used.in.debug.mode", "true");
 		
 		props.setProperty("jawr.css.bundle.common.global", "true");
@@ -124,7 +126,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements SchedulingConf
         controller.setType(type);
         try {
 			controller.afterPropertiesSet();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new RuntimeException(e);
 		}
         return controller;
@@ -133,23 +135,20 @@ public class MVCConfig extends WebMvcConfigurerAdapter implements SchedulingConf
     @Bean(name = "jawrJsController")
     @RequestMapping(value = "/**/*.js", method = RequestMethod.GET)
     protected JawrSpringController jawrJsController() {
-    	final JawrSpringController controller = defaultJawrSpringController("js");
-    	return controller;
+        return defaultJawrSpringController("js");
     }
 
     @Bean(name = "jawrImageController")
     @RequestMapping(value = {"*.gif", "*.ico", "*.png", "*.jpg", "*.jpeg"})
     protected JawrSpringController jawrImageController() {
-        final JawrSpringController controller = defaultJawrSpringController("img");
-        return controller;
+        return defaultJawrSpringController("img");
     }
 
     @DependsOn(value = "jawrImageController")
     @Bean(name = "jawrCSSController")
     @RequestMapping(value = "/**/*.css", method = RequestMethod.GET)
     protected JawrSpringController jawrCSSController() {
-        final JawrSpringController controller = defaultJawrSpringController("css");
-        return controller;
+        return defaultJawrSpringController("css");
     }
 
 }
